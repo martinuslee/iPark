@@ -29,8 +29,8 @@ const HomeScreen = ({ route, navigation }) => {
   const [users_member, setUsers_member] = useState([]);
   const [Email, setEmail] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
-
   const [refreshing, setRefreshing] = useState(false);
+  let email_modify;
 
   AsyncStorage.getItem('Email').then(Email => {
     setEmail(Email);
@@ -64,30 +64,32 @@ const HomeScreen = ({ route, navigation }) => {
       throw e;
     }
 
-    AsyncStorage.getItem('Email').then(Email => {    
-    
-    try {
-      console.log(Email)
-      if (Email.indexOf('korea.ac.kr') != -1) {
-        email_modify = Email.replace('.ac.kr', '');
+    AsyncStorage.getItem('Email').then(Email => {
+      try {
+        console.log(Email);
+        if (Email.indexOf('korea.ac.kr') != -1) {
+          email_modify = Email.replace('.ac.kr', '');
+        }
+        if (Email.indexOf('.com') != -1) {
+          email_modify = Email.replace('.com', '');
+        }
+        console.log('change email : ', email_modify);
+        console.log(
+          'https://cxz3619.pythonanywhere.com/memberData/' + email_modify,
+        );
+
+        fetch('https://cxz3619.pythonanywhere.com/memberData/' + email_modify)
+          .then(response => response.json())
+          .then(data => {
+            setUsers_member(data);
+            console.log(users_member);
+          })
+          .catch(error => console.log('error : ', error));
+      } catch (e) {
+        setError(e);
+        console.log('error 2 : ', error);
+        throw e;
       }
-      if (Email.indexOf('.com') != -1) {
-        email_modify = Email.replace('.com', '');
-      }      
-      console.log(email_modify)
-
-      fetch("http://cxz3619.pythonanywhere.com/memberData/" + email_modify)
-        .then(response => response.json())
-        .then(data_member => {
-          // data_member.filter()
-          setUsers_member(data_member);
-        });
-    }
-    catch (e) {
-      setError(e);
-      throw (e)
-    }
-
   });
   }, [error]);
 
@@ -142,7 +144,7 @@ const HomeScreen = ({ route, navigation }) => {
               <Image
                 style={{ width: 100, height: 100 }}
                 source={{ uri: users_member.image }}
-              // source={require('./assets/images/checked.png')}
+                // source={require('./assets/images/checked.png')}
               />
             </View>
           </View>

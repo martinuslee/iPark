@@ -45,7 +45,7 @@ const ScanScreen = () => {
       if (e.data.indexOf('gmail.com') != -1) {
         const userInfo = JSON.parse(e.data);
         setEmail(userInfo.email.replace('.com', '').toString());
-        //gmail.com 에서 .com 삭제 
+        //gmail.com 에서 .com 삭제
         setphotoURL(userInfo.photo); //구글 프로필 이미지
       }
       scanned ? setScanned(false) : setScanned(true); //큐알 인식시 state 바꿔주기
@@ -61,15 +61,14 @@ const ScanScreen = () => {
       fetch(API_URL + 'memberData/' + email.replace(/\"/gi, '')) //qr 인식시 큰따옴표 삭제 , 전체 MeberData에 get(정보있는지,없을때도 예외처리 해줘야 함)
         .then(response => response.json())
         .then(data => {
-          console.log('data.phnoe_num:', data.phone_num);
           console.log('user info:', data);
           setUsers(data);
           try {
             //백신 확인
             if (data.covid_vaccine !== true) {
               console.log('test covid ' + data.covid_vaccine)
-              setVaccine(data.covid_vaccine)
-              SoundPlayer.playSoundFile('error', 'mp3'); //잘못된 입장 요청             
+              setVaccine(data.covid_vaccine);
+              SoundPlayer.playSoundFile('error', 'mp3'); //잘못된 입장 요청
               throw new Error('covid test result missing');
             }
             if(data.image=='https://cxz3619.pythonanywhere.com/media/default.jpg'){
@@ -78,6 +77,7 @@ const ScanScreen = () => {
               Alert.alert("프로필 사진 미등록자입니다.")
               throw new Error('err:프로필 사진 미등록자입니다.');
             }
+
             fetch(API_URL + 'liveData/', {
               // MemberData에 있는 정보로 liveData(실시간인원 post)
               method: 'POST',
@@ -143,6 +143,8 @@ const ScanScreen = () => {
                       major: data.major,
                       student_num: data.student_num,
                       enter_time: moment().format('YYYY/MM/DD HH:mm:ss'),
+                      Registraction: data.Registraction,
+                      reverse_product: data.reverse_product,
                     }),
                   })
                     .then(response => response.json())
