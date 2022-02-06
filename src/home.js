@@ -82,6 +82,7 @@ const HomeScreen = ({ route, navigation }) => {
           .then(response => response.json())
           .then(data => {
             setUsers_member(data);
+            console.log(data);
             console.log(users_member);
           })
           .catch(error => console.log('error : ', error));
