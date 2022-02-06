@@ -65,10 +65,9 @@ const ScanScreen = () => {
           setUsers(data);
           try {
             //백신 확인
-            if (data.covid_vaccine !== false) {
+            if (data.covid_vaccine !== true) {
               console.log('test covid ' + data.covid_vaccine)
               setVaccine(data.covid_vaccine);
-              Alert.alert("백신 접종 미등록자 입니다.")
               SoundPlayer.playSoundFile('error', 'mp3'); //잘못된 입장 요청
               throw new Error('covid test result missing');
             }
