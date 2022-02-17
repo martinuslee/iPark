@@ -145,8 +145,8 @@ const ScanScreen = () => {
                       major: data.major,
                       student_num: data.student_num,
                       enter_time: moment().format('YYYY/MM/DD HH:mm:ss'),
-                      Registraction: data.Registraction,
-                      reverse_product: data.reverse_product,
+                      registration_date: data.registration_date,
+                      reserve_product: data.reserve_product,
                     }),
                   })
                     .then(response => response.json())
