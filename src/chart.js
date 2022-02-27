@@ -51,12 +51,12 @@ const Chart = () => {
   }, []);
 
   return (
-    <View style={{ flex: 1, padding: 5 }}>
+    <View style={{ flex: 1, padding: 5, justifyContent: 'center'}}>
       <BarChart
         data={{
           labels: [
             // eslint-disable-next-line prettier/prettier
-            '6', '7', '8', '13', '14', '15', '16', '17', '18', '19', '20', '21',
+            '6H', '7H', '8H', '13H', '14H', '15H', '16H', '17H', '18H', '19H', '20H', '21H',
           ],
           datasets: [
             {
@@ -65,20 +65,24 @@ const Chart = () => {
           ],
           barColors: ['blue'],
         }}
-        flatColor={true}
         width={Dimensions.get('window').width - 16}
         height={Dimensions.get('window').width / 2}
+        horizontalLabelRotation={0}
+        verticalLabelRotation={0}
         showBarTops={false}
+        showValuesOnTopOfBars={true}
         fromZero={true}
+        flatColor={true}
+        yAxisSuffix='명'
         chartConfig={{
           backgroundColor: 'black',
           backgroundGradientFrom: '#eff3ff',
           backgroundGradientTo: '#efefef',
           fillShadowGradientOpacity: 1,
-          fillShadowGradient: 'blue',
+          fillShadowGradient: '#A33B39',
           decimalPlaces: 0,
-          barRadius: 5,
-          barPercentage: 0.3,
+          barRadius: 3,
+          barPercentage: 0.2,
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           style: {
             borderRadius: 16,

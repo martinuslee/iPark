@@ -131,9 +131,10 @@ const HomeScreen = ({ route, navigation }) => {
                 percent={(users.length / 50) * 100}
                 radius={50}
                 borderWidth={8}
-                color="#3399FF"
+                color="#A33B39"
                 shadowColor="#999"
-                bgColor="#fff">
+                bgColor="#fff"
+                >
                 <Text style={{ fontSize: 18 }}>{users.length} /50</Text>
               </ProgressCircle>
             </View>
@@ -143,7 +144,7 @@ const HomeScreen = ({ route, navigation }) => {
                 <Text style={{ color: 'white' }}>유저 프로필</Text>
               </View>
               <Image
-                style={{ width: 100, height: 100 }}
+                style={{ width: 100, height: 100, borderRadius: 10}}
                 source={{ uri: users_member.image }}
                 // source={require('./assets/images/checked.png')}
               />
@@ -158,6 +159,7 @@ const HomeScreen = ({ route, navigation }) => {
               <Chart />
             </View>
           </View>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -167,6 +169,10 @@ const HomeScreen = ({ route, navigation }) => {
                 navigation.navigate('QRGenerate', {
                   email: Email,
                   photo: userPhoto,
+                  name: users_member.name,
+                  image: users_member.image,
+                  major: users_member.major,
+                  student_num: users_member.student_num,
                 })
               }>
               <Text style={styles.text}>QR Code</Text>
@@ -207,22 +213,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#A33B39',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 25,
+    borderRadius: 15,
     marginHorizontal: 5,
   },
   text: {
     color: 'white',
   },
   radiusbar: {
-    width: 100,
+    width: 120,
     height: 30,
     backgroundColor: '#A33B39',
     borderBottomWidth: 0.5,
-    borderRadius: 25,
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 2,
-    marginBottom: 5,
+    marginBottom: 15,
   },
   container: {
     flex: 1,
