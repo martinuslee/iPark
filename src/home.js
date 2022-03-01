@@ -151,12 +151,15 @@ const HomeScreen = ({ route, navigation }) => {
             </View>
           </View>
 
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1.5 }}>
             <View style={styles.container}>
               <View style={styles.radiusbar}>
                 <Text style={{ color: 'white' }}>이용시간 분포</Text>
               </View>
               <Chart />
+            </View>
+            <View style={{marginRight: 10, alignItems:'flex-end'}}>
+              <Text style={{fontWeight: 'bold', color: '#A33B39'}}>* 이용 당일 기준 '한 달' 동안의 평균 이용 시간입니다.</Text>
             </View>
           </View>
 
@@ -239,9 +242,8 @@ const styles = StyleSheet.create({
     //height: 1000,
   },
   buttonContainer: {
-    flex: 0.3,
+    flex: 0.5,
     flexDirection: 'row',
-    marginTop: 60,
     alignItems: 'center',
     justifyContent: 'center',
   },
