@@ -20,10 +20,10 @@ maxlength_p=30
 const Item = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <View style={{flex:3}}>
-    <Text style={styles.title}>{item.title.length>=maxlength_t?item.title.substring(0,maxlength_t)+"...":item.title}</Text>
-    <Text style={styles.paragraph}>{item.paragraph.length>=maxlength_p?item.paragraph.substring(0,maxlength_p)+"...":item.paragraph}</Text>
+        <Text style={styles.title}>{item.title.length>=maxlength_t?item.title.substring(0,maxlength_t)+"...":item.title}</Text>
+        <Text style={styles.paragraph}>{item.paragraph.length>=maxlength_p?item.paragraph.substring(0,maxlength_p)+"...":item.paragraph}</Text>
     </View>
-<Image style={{width:60,height:60}} source={{uri:item.image}} />
+    <Image style={{width:60,height:60}} source={{uri:item.image}} />
   </TouchableOpacity>
 );
 
@@ -61,7 +61,11 @@ const NoticeBoard = ({ navigation }) => {
             navigation.navigate('NoticeView', { id: item.id, title: item.title, paragraph: item.paragraph, image: item.image })
             // console.log(item.id)
           }}
-          style={{ backgroundColor }}
+          style={{
+            borderRadius: 10,
+            borderWidth: 0.5,
+            borderColor: 'gray',
+          }}
         />
       </View>
     );
