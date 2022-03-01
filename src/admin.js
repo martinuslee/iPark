@@ -33,7 +33,7 @@ const AdminScreen = ({navigation}) => {
           title="Login"
           color="#A33B39"
           onPress={() => {
-            code === 'admin1234'
+            code === '1905admin'
               ? navigation.navigate('QRscan')
               : Alert.alert('잘못된 입력입니다.');
           }}

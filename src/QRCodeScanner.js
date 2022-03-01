@@ -65,12 +65,12 @@ const ScanScreen = () => {
           setUsers(data);
           try {
             //백신 확인
-            if (data.covid_vaccine !== true) {
-              console.log('test covid ' + data.covid_vaccine)
-              setVaccine(data.covid_vaccine);
-              SoundPlayer.playSoundFile('error', 'mp3'); //잘못된 입장 요청
-              throw new Error('covid test result missing');
-            }
+//            if (data.covid_vaccine !== true) {
+//              console.log('test covid ' + data.covid_vaccine)
+//              setVaccine(data.covid_vaccine);
+//              SoundPlayer.playSoundFile('error', 'mp3'); //잘못된 입장 요청
+//              throw new Error('covid test result missing');
+//            }
             const image_url = data.image.substring(48, 55); //default 값 빼오기
             console.log(image_url);
             if(image_url=='default'){
@@ -191,6 +191,7 @@ const ScanScreen = () => {
   };
 
   return (
+    // 백신 접종 : {users.covid_vaccine ? '2차 접종 확인 ✅' : '2차 접종 미확인 🚫'}
     <View>
       <QRCodeScanner
         ref={camera => (scanner = camera)} // qr스캐너 초기화
@@ -213,9 +214,8 @@ const ScanScreen = () => {
                   <View>
                     <Text style={styles.resultMsg}>
                       이름 : {JSON.stringify(users.name).slice(1, -1)}{'\n'}
-                      회원권 : {JSON.stringify(users.reserve_product).slice(1, -1)}{'\n'}
                       학번 : {JSON.stringify(users.student_num).slice(1, -1)}{'\n'}
-                      백신 접종 : {users.covid_vaccine ? '2차 접종 확인 ✅' : '2차 접종 미확인 🚫'}
+                      회원권 : {JSON.stringify(users.reserve_product).slice(1, -1)}
                     </Text>
                     <Text style={styles.stateMsg}>
                       {state}
@@ -307,6 +307,7 @@ const styles = StyleSheet.create({
     height: SCREEN_WIDTH,
     width: SCREEN_WIDTH,
     backgroundColor: overlayColor,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -334,7 +335,7 @@ const styles = StyleSheet.create({
   resultMsg: {
     fontSize: 17,
     color: 'white',
-    textAlign: 'center',
+    marginLeft: 10,
   },
 
   stateMsg: {
