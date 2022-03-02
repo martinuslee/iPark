@@ -126,17 +126,11 @@ const HomeScreen = ({ route, navigation }) => {
               <View style={styles.radiusbar}>
                 <Text style={{ color: 'white' }}>실시간 이용자</Text>
               </View>
-
-              <ProgressCircle
-                percent={(users.length / 50) * 100}
-                radius={50}
-                borderWidth={8}
-                color="#A33B39"
-                shadowColor="#999"
-                bgColor="#fff"
-                >
-                <Text style={{ fontSize: 18 }}>{users.length} /50</Text>
-              </ProgressCircle>
+              <View style={{width: 100, height: 100, borderRadius: 50, backgroundColor: '#A33B39', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{width: 80, height: 80, borderRadius: 40, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{ fontSize: 30, color: '#A33B39' }}>{users.length}</Text>
+                </View>
+              </View>
             </View>
 
             <View style={styles.container}>
