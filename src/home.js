@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  Modal,
+  Linking,
 } from 'react-native';
 //import {baseProps} from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 import { GoogleSignin } from '@react-native-community/google-signin';
@@ -30,7 +32,32 @@ const HomeScreen = ({ route, navigation }) => {
   const [Email, setEmail] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [modalVisible, setModalVisible] =useState(false);
   let email_modify;
+  var year = new Date().getFullYear() // 년
+  var month = new Date().getMonth() + 1// 월
+  var date = new Date().getDate(); // 일
+  var Day = new Date().getDay(); // 요일 월 화 수 목 금 토 일 0 1 2 3 4 5 6
+  // 이번 달 1일 요일
+  var tmpDate = date
+  var tmpDay = Day
+  var thirdWeekMonday, fourthWeekFriday
+  tmpDate % 7 == 0 ? (tmpDate = 7) : (tmpDate %= 7)
+  tmpDay = ((7 + tmpDay) - (tmpDate - 1)) % 7
+  // 이번 달 셋째주 월요일
+  if(tmpDay > 1){ // 화수모금토
+    thirdWeekMonday = 1 + 14 - (tmpDay - 1)
+  }
+  else if(tmpDay == 0){ // 일
+    thirdWeekMonday = 1 + 14 + 1
+  }
+  else{ // 월
+    thirdWeekMonday = 1 + 14
+  }
+  // 이번 달 넷째주 금요일
+  fourthWeekFriday = thirdWeekMonday + 11
+  // 다음 달 말일
+  var lastDate = new Date(year, month + 1, 0).getDate();
 
   AsyncStorage.getItem('Email').then(Email => {
     setEmail(Email);
@@ -51,6 +78,9 @@ const HomeScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     try {
+        if(thirdWeekMonday <= date && fourthWeekFriday >= date){
+            setModalVisible(true)
+        }
       fetch(API_URL)
         .then(response => response.json())
         .then(data => {
@@ -116,15 +146,63 @@ const HomeScreen = ({ route, navigation }) => {
   } else {
     return (
       <SafeAreaView style={styles.mainContainer}>
+
+          <Modal visible={modalVisible} transparent={true} animationType='slide'>
+              <View style={{flex: 1, justifyContent: 'center', alignItems: 'center',}}>
+                  <View style={styles.registerAlert}>
+                    <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center',}}>{(month) % 12 + 1}月 IPark 등록기간 일정 안내{'\n'}</Text>
+                    <Text style={{fontWeight: 'bold',}}>■ 온라인 접수 기간</Text>
+                    <Text>{year}년 {month}월 {thirdWeekMonday}일 ~ {year}년 {month}월 {fourthWeekFriday}일</Text>
+                    <Text>(전월 셋째주 월요일 ~ 넷째주 금요일){'\n'}</Text>
+
+                    <Text style={{fontWeight: 'bold',}}>■ 현장 접수 기간</Text>
+                    <Text>{(month + 1) == 13 ? year + 1 : year}년 {(month) % 12 + 1}월 1일 ~ {(month + 1) == 13 ? year + 1 : year}년 {(month) % 12 + 1}월 {lastDate}일</Text>
+                    <Text>(당월 1일 ~ 당월 말일){'\n'}</Text>
+
+                    <TouchableOpacity
+                      style={{ backgroundColor: '#A33B39', marginBottom: 20, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 10}}
+                      onPress={() => setModalVisible(!modalVisible)}>
+                      <Text style={styles.text}>☑   위 내용을 확인했습니다</Text>
+                    </TouchableOpacity>
+
+                    <Text style={{fontWeight: 'bold',}}>■ 참고 링크</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <TouchableOpacity
+                          activeOpacity={0.8}
+                          style={styles.registerButton}
+                          onPress={() => Linking.openURL('https://sejong.korea.ac.kr/mbshome/mbs/kr/subview.do?id=kr_050705010000')}>
+                          <Text style={styles.text}>이용안내</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          activeOpacity={0.8}
+                          style={styles.registerButton}
+                          onPress={() => Linking.openURL('https://sejong.korea.ac.kr/mbshome/mbs/kr/subview.do?id=kr_050705020000')}>
+                          <Text style={styles.text}>이용요금</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          activeOpacity={0.8}
+                          style={styles.registerButton}
+                          onPress={() => Linking.openURL('https://sejong.korea.ac.kr/mbshome/mbs/kr/subview.do?id=kr_050705040000')}>
+                          <Text style={styles.text}>환불규정</Text>
+                        </TouchableOpacity>
+                    </View>
+                  </View>
+              </View>
+          </Modal>
+
         <ScrollView
           contentContainerStyle={styles.mainContainer}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
+
           <View style={{ flexDirection: 'row', position: 'relative', flex: 1 }}>
+
             <View style={styles.container}>
               <View style={styles.radiusbar}>
-                <Text style={{ color: 'white' }}>실시간 이용자</Text>
+                <Text style={{ color: 'white' }}>실시간 이용 인원</Text>
               </View>
               <View style={{width: 100, height: 100, borderRadius: 50, backgroundColor: '#A33B39', justifyContent: 'center', alignItems: 'center'}}>
                 <View style={{width: 80, height: 80, borderRadius: 40, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'}}>
@@ -250,6 +328,32 @@ const styles = StyleSheet.create({
     height: 55,
     backgroundColor: '#A33B39',
     // marginTop: 20,
+  },
+  registerAlert: {
+    width: '90%',
+    height:'50%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+
+    shadowColor: "#000",
+    shadowOffset: {
+    	width: 0,
+    	height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+    elevation: 24,
+  },
+  registerButton: {
+    width: 100,
+    height: 40,
+    backgroundColor: '#A33B39',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    flex: 1,
+    margin: 5,
   },
 });
 
