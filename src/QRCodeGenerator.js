@@ -17,6 +17,7 @@ const QRCodeGenerator = ({route}) => {
             <Text>{userInfo.student_num}</Text>
             <Text>{userInfo.major}</Text>
             <Text>{userInfo.email}</Text>
+            <Text>{userInfo.reserve_product}</Text>
         </View>
       </View>
 

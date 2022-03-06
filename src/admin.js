@@ -18,6 +18,9 @@ const AdminScreen = ({navigation}) => {
     <SafeAreaView>
       <View style={styles.mainView}>
         <Text style={styles.baseText}>
+          <Text style={styles.WarningTextStyle}>관리자 이외의 접근을 금합니다.</Text>
+        </Text>
+        <Text style={styles.baseText}>
           <Text style={styles.TextStyle}>관리자 인증 코드를 입력해주세요</Text>
         </Text>
         <TextInput
@@ -51,10 +54,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   baseText: {
+    marginTop: 10,
     fontFamily: 'Cochin',
   },
   TextStyle: {
-    fontSize: 20,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  WarningTextStyle: {
+    fontSize: 25,
+    color: '#A33B39',
     fontWeight: 'bold',
   },
   TextInput: {

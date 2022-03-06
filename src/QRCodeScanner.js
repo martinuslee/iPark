@@ -198,32 +198,34 @@ const ScanScreen = () => {
         onRead={e => onSuccess(e)} //QR코드 읽으면 어떤 함수 실행할지
         showMarker={true} //리더기에 초록색 사각형
         reactivate={true} //카메라 재 반응
-        reactivateTimeout={3000} //한번 반응하면 5초후 반응
+        reactivateTimeout={6000} //한번 반응하면 5초후 반응
         cameraStyle={{ height: SCREEN_HEIGHT }}
         customMarker={
           <View style={styles.rectangleContainer}>
             <View style={styles.topOverlay}>
-              <Image
-                resizeMode="cover"
-                style={{ width: 100, height: 100, alignItems: 'flex-end' }}
-                source={{ uri: users.image }}
-              />
               <View>
                 {console.log(typeof users.email)}
                 {users.email ? (
-                  <View>
-                    <Text style={styles.resultMsg}>
-                      이름 : {JSON.stringify(users.name).slice(1, -1)}{'\n'}
-                      학번 : {JSON.stringify(users.student_num).slice(1, -1)}{'\n'}
-                      회원권 : {JSON.stringify(users.reserve_product).slice(1, -1)}
-                    </Text>
-                    <Text style={styles.stateMsg}>
-                      {state}
-                    </Text>
+                  <View style={{flexDirection: 'row'}}>
+                    <Image
+                        resizeMode="cover"
+                        style={{ width: 100, height: 100, alignItems: 'flex-end' }}
+                        source={{ uri: users.image }}
+                    />
+                    <View>
+                        <Text style={styles.resultMsg}>
+                          이름 : {JSON.stringify(users.name).slice(1, -1)}{'\n'}
+                          학번 : {JSON.stringify(users.student_num).slice(1, -1)}{'\n'}
+                          회원권 : {JSON.stringify(users.reserve_product).slice(1, -1)}
+                        </Text>
+                        <Text style={styles.stateMsg}>
+                          {state}
+                        </Text>
+                    </View>
                   </View>
                 ) : (
                   <View>
-                    <Text style={styles.resultMsg}> QR CODE를 인식 시켜주세요.! </Text>
+                    <Text style={{color: 'white'}}>QR CODE를 인식 시켜주세요.</Text>
                   </View>
                 )}
               </View>
@@ -307,7 +309,6 @@ const styles = StyleSheet.create({
     height: SCREEN_WIDTH,
     width: SCREEN_WIDTH,
     backgroundColor: overlayColor,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
