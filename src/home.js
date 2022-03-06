@@ -202,15 +202,37 @@ const HomeScreen = ({ route, navigation }) => {
 
             <View style={styles.container}>
               <View style={styles.radiusbar}>
-                <Text style={{ color: 'white' }}>실시간 이용 인원</Text>
+                <Text style={{ color: 'white' }}>수용 인원</Text>
               </View>
-              <View style={{width: 100, height: 100, borderRadius: 50, backgroundColor: '#A33B39', justifyContent: 'center', alignItems: 'center'}}>
-                <View style={{width: 80, height: 80, borderRadius: 40, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{ fontSize: 30, color: '#A33B39' }}>{users.length}</Text>
-                </View>
+              <View>
+              <ProgressCircle
+                  percent={(users.length / 50) * 100}
+                  radius={50}
+                  borderWidth={8}
+                  color="#A33B39"
+                  shadowColor="#999"
+                  bgColor="#fff">
+                  <Text style={{ fontSize: 18 }}>{users.length} / 50</Text>
+                </ProgressCircle>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.questionButton}
+                    onPress={() =>
+                      Alert.alert(
+                          "수용인원 제한 안내",
+                          "회원들의 원활한 IPark 이용을 위해 수용인원 50명이 초과되면 입장에 제한이 있을 수 있습니다.",
+                          [
+                            {
+                                text: "☑ 위 내용을 확인했습니다",
+                                onPress: () => console.log("OK Pressed"),
+                            }
+                          ]
+                      )
+                    }>
+                    <Text style={styles.text}>?</Text>
+                  </TouchableOpacity>
               </View>
             </View>
-
             <View style={styles.container}>
               <View style={styles.radiusbar}>
                 <Text style={{ color: 'white' }}>유저 프로필</Text>
@@ -231,7 +253,7 @@ const HomeScreen = ({ route, navigation }) => {
               <Chart />
             </View>
             <View style={{marginRight: 10, alignItems:'flex-end'}}>
-              <Text style={{fontWeight: 'bold', color: '#A33B39'}}>* 이용 당일 기준 '한 달' 동안의 평균 이용 시간입니다.</Text>
+              <Text style={{fontWeight: 'bold', color: '#A33B39'}}>* '한 달 전~오늘'까지의 시간대별 평균 이용 인원수 입니다.</Text>
             </View>
           </View>
 
@@ -248,6 +270,7 @@ const HomeScreen = ({ route, navigation }) => {
                   image: users_member.image,
                   major: users_member.major,
                   student_num: users_member.student_num,
+                  reserve_product: users_member.reserve_product,
                 })
               }>
               <Text style={styles.text}>QR Code</Text>
@@ -290,6 +313,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 15,
     marginHorizontal: 5,
+  },
+  questionButton: {
+      width: 20,
+      height: 20,
+      position: 'absolute',
+      right: -10,
+      bottom: -10,
+      backgroundColor: '#A33B39',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 10,
+      marginHorizontal: 5,
   },
   text: {
     color: 'white',
