@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 'use strict';
 import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   AppRegistry,
@@ -9,7 +9,8 @@ import {
   Text,
   Dimensions,
   Image,
-  View, Alert
+  View,
+  Alert,
 } from 'react-native';
 import SoundPlayer from 'react-native-sound-player';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -17,6 +18,7 @@ import moment from 'moment-timezone';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
+import * as Progress from 'react-native-progress';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -26,6 +28,7 @@ const ScanScreen = () => {
   const [users, setUsers] = useState([]); //memberData 에서 user정보 받기 위함
   const [photoURL, setphotoURL] = useState(null); //google 이미지
   const [vaccine, setVaccine] = useState(false);
+  const [member, setMember] = useState([]);
   const [error, setError] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [state, setState] = useState('');
@@ -34,7 +37,7 @@ const ScanScreen = () => {
     setUsers([]);
     setEmail('');
     setState('');
-    console.log("onsucess.e:",e);
+    console.log('onsucess.e:', e);
     if (e.data.substring(0, 8) === '{"email"') {
       if (e.data.indexOf('korea.ac.kr') != -1) {
         const userInfo = JSON.parse(e.data);
@@ -65,18 +68,18 @@ const ScanScreen = () => {
           setUsers(data);
           try {
             //백신 확인
-//            if (data.covid_vaccine !== true) {
-//              console.log('test covid ' + data.covid_vaccine)
-//              setVaccine(data.covid_vaccine);
-//              SoundPlayer.playSoundFile('error', 'mp3'); //잘못된 입장 요청
-//              throw new Error('covid test result missing');
-//            }
+            //            if (data.covid_vaccine !== true) {
+            //              console.log('test covid ' + data.covid_vaccine)
+            //              setVaccine(data.covid_vaccine);
+            //              SoundPlayer.playSoundFile('error', 'mp3'); //잘못된 입장 요청
+            //              throw new Error('covid test result missing');
+            //            }
             const image_url = data.image.substring(48, 55); //default 값 빼오기
             console.log(image_url);
-            if(image_url=='default'){
-              console.log("data.image:",data.image);
+            if (image_url == 'default') {
+              console.log('data.image:', data.image);
               SoundPlayer.playSoundFile('error', 'mp3');
-              Alert.alert("프로필 사진 미등록자입니다.")
+              Alert.alert('프로필 사진 미등록자입니다.');
               throw new Error('err:프로필 사진 미등록자입니다.');
             }
 
@@ -130,7 +133,6 @@ const ScanScreen = () => {
                 ) {
                   SoundPlayer.playSoundFile('error', 'mp3'); //데이터 베이스에 없는 사람 출입 시
                 } else {
-
                   console.log(API_URL + 'covidRecord/');
                   // 코로나 기록
                   fetch(API_URL + 'covidRecord/', {
@@ -158,6 +160,13 @@ const ScanScreen = () => {
                   SoundPlayer.playSoundFile('in', 'mp3'); // 정상적인 입장
                   setState('입장');
                 }
+                fetch(API_URL + 'liveData/')
+                  .then(response => response.json())
+                  .then(data => {
+                    setMember(data);
+                    console.log('data : ', member);
+                    console.log('member length : ', member.length);
+                  });
               })
               .catch(error => {
                 console.log('liveData_data_Input_error:', error);
@@ -199,7 +208,7 @@ const ScanScreen = () => {
         showMarker={true} //리더기에 초록색 사각형
         reactivate={true} //카메라 재 반응
         reactivateTimeout={6000} //한번 반응하면 5초후 반응
-        cameraStyle={{ height: SCREEN_HEIGHT }}
+        cameraStyle={{height: SCREEN_HEIGHT}}
         customMarker={
           <View style={styles.rectangleContainer}>
             <View style={styles.topOverlay}>
@@ -208,30 +217,33 @@ const ScanScreen = () => {
                 {users.email ? (
                   <View style={{flexDirection: 'row'}}>
                     <Image
-                        resizeMode="cover"
-                        style={{ width: 100, height: 100, alignItems: 'flex-end' }}
-                        source={{ uri: users.image }}
+                      resizeMode="cover"
+                      style={{width: 100, height: 100, alignItems: 'flex-end'}}
+                      source={{uri: users.image}}
                     />
                     <View>
-                        <Text style={styles.resultMsg}>
-                          이름 : {JSON.stringify(users.name).slice(1, -1)}{'\n'}
-                          학번 : {JSON.stringify(users.student_num).slice(1, -1)}{'\n'}
-                          회원권 : {JSON.stringify(users.reserve_product).slice(1, -1)}
-                        </Text>
-                        <Text style={styles.stateMsg}>
-                          {state}
-                        </Text>
+                      <Text style={styles.resultMsg}>
+                        이름 : {JSON.stringify(users.name).slice(1, -1)}
+                        {'\n'}
+                        학번 : {JSON.stringify(users.student_num).slice(1, -1)}
+                        {'\n'}
+                        회원권 :{' '}
+                        {JSON.stringify(users.reserve_product).slice(1, -1)}
+                      </Text>
+                      <Text style={styles.stateMsg}>{state}</Text>
                     </View>
                   </View>
                 ) : (
                   <View>
-                    <Text style={{color: 'white'}}>QR CODE를 인식 시켜주세요.</Text>
+                    <Text style={{color: 'white', marginBottom: 10}}>
+                      QR CODE를 인식 시켜주세요.
+                    </Text>
                   </View>
                 )}
               </View>
             </View>
 
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <View style={styles.leftAndRightOverlay} />
 
               <View style={styles.rectangle}>
@@ -256,7 +268,24 @@ const ScanScreen = () => {
               <View style={styles.leftAndRightOverlay} />
             </View>
 
-            <View style={styles.bottomOverlay} />
+            <View style={styles.bottomOverlay}>
+              <Text
+                style={{
+                  color: 'white',
+                  marginTop: 20,
+                  marginBottom: 20,
+                  fontSize: 17,
+                  fontWeight: 'bold',
+                }}>
+                {member.length} / 50
+              </Text>
+              <Progress.Bar
+                progress={member.length / 50}
+                width={300}
+                height={15}
+                color={'#8A0808'}
+              />
+            </View>
           </View>
         }
       />
@@ -319,6 +348,7 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     backgroundColor: overlayColor,
     paddingBottom: SCREEN_WIDTH * 0.25,
+    alignItems: 'center',
   },
 
   leftAndRightOverlay: {
@@ -344,7 +374,7 @@ const styles = StyleSheet.create({
     color: 'pink',
     fontWeight: 'bold',
     textAlign: 'center',
-  }
+  },
 });
 
 AppRegistry.registerComponent('default', () => ScanScreen);
