@@ -82,6 +82,14 @@ const ScanScreen = () => {
               Alert.alert('프로필 사진 미등록자입니다.');
               throw new Error('err:프로필 사진 미등록자입니다.');
             }
+            if (
+              data.reserve_product.includes('아침') &&
+              new Date().getHours() > 12
+            ) {
+              SoundPlayer.playSoundFile('error', 'mp3');
+              Alert.alert('아침권은 오후에 사용하실 수 없습니다.');
+              throw new Error('err:아침권은 오후에 사용하실 수 없습니다.');
+            }
 
             fetch(API_URL + 'liveData/', {
               // MemberData에 있는 정보로 liveData(실시간인원 post)
@@ -277,14 +285,30 @@ const ScanScreen = () => {
                   fontSize: 17,
                   fontWeight: 'bold',
                 }}>
-                수용인원 : {member.length} / 50
+                수용인원 : {member.length}
               </Text>
-              <Progress.Bar
-                progress={member.length / 50}
-                width={300}
-                height={15}
-                color={'#8A0808'}
-              />
+              {member.length < 20 ? (
+                <Progress.Bar
+                  progress={member.length / 50}
+                  width={300}
+                  height={15}
+                  color={'#58FA58'}
+                />
+              ) : member.length < 40 ? (
+                <Progress.Bar
+                  progress={member.length / 50}
+                  width={300}
+                  height={15}
+                  color={'#FFBF00'}
+                />
+              ) : (
+                <Progress.Bar
+                  progress={member.length / 50}
+                  width={300}
+                  height={15}
+                  color={'#8A0808'}
+                />
+              )}
             </View>
           </View>
         }
