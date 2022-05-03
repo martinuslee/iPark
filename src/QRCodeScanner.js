@@ -82,14 +82,14 @@ const ScanScreen = () => {
               Alert.alert('프로필 사진 미등록자입니다.');
               throw new Error('err:프로필 사진 미등록자입니다.');
             }
-            if (
-              data.reserve_product.includes('아침') &&
-              new Date().getHours() > 12
-            ) {
-              SoundPlayer.playSoundFile('error', 'mp3');
-              Alert.alert('아침권은 오후에 사용하실 수 없습니다.');
-              throw new Error('err:아침권은 오후에 사용하실 수 없습니다.');
-            }
+//            if (
+//              data.reserve_product.includes('아침') &&
+//              new Date().getHours() > 12
+//            ) {
+//              SoundPlayer.playSoundFile('error', 'mp3');
+//              Alert.alert('아침권은 오후에 사용하실 수 없습니다.');
+//              throw new Error('err:아침권은 오후에 사용하실 수 없습니다.');
+//            }
 
             fetch(API_URL + 'liveData/', {
               // MemberData에 있는 정보로 liveData(실시간인원 post)
