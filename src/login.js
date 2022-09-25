@@ -6,14 +6,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { Linking } from 'react-native';
 const LoginScreen = ({navigation}) => {
-  /*
-  const [userEmail, setUserEmail] = useState(null);
-  const [userPhoto, setUserPhoto] = useState(null);
-  // const [userPhotoURL, setUserPhotoURL] = useState(null);
-
-  //const [loading, setLoading] = useState(false);
-  //const [error, setError] = useState('');
-  */
   useEffect(() => {
     logincheck();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,11 +18,6 @@ const LoginScreen = ({navigation}) => {
           routes: [
             {
               name: 'Home',
-              /*, params: {
-              email: userEmail,
-              photo: userPhoto,
-              photoURL: userPhotoURL
-              }*/
             },
           ],
         });
@@ -44,9 +31,16 @@ const LoginScreen = ({navigation}) => {
       <Text style={styles.text}>Please sign in using korea univ email</Text>
       <View style={styles.buttonContainer}>
         <AppleSignIn />
-        <SnsGoogleLogin /> 
-        <Text style={{color:'white' , fontSize:10}}  onPress={()=>Linking.openURL("https://kuipark.blogspot.com/2021/07/ipark-ipakradmin-30.html")}>개인정보처리방침</Text>       
-
+        <SnsGoogleLogin />
+        <Text
+          style={{color: 'white', fontSize: 10}}
+          onPress={() =>
+            Linking.openURL(
+              'https://kuipark.blogspot.com/2021/07/ipark-ipakradmin-30.html',
+            )
+          }>
+          개인정보처리방침
+        </Text>
       </View>
     </View>
   );

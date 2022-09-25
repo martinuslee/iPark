@@ -55,22 +55,7 @@ const SnsGoogleLogin = () => {
             name: 'Home',
           },
         ],
-      }); /*
-       userInfo.user.email.split('@')[1] == 'korea.ac.kr'
-        ? navigation.reset({
-            routes: [
-              {
-                name: 'Home',
-              },
-            ],
-          })
-        : Alert.alert(
-            '로그아웃 후 학교 이메일로 로그인하세요!!(포털id@korea.ac.kr)',
-            await GoogleSignin.revokeAccess(),
-            await GoogleSignin.signOut(),
-          ); // korea.ac.kr 꼴만 출입가능
-        */
-      //밑에는 로그인 실패시 오류 메시지
+      });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // when user cancels sign in process,
@@ -100,22 +85,6 @@ const SnsGoogleLogin = () => {
     }
   }
 
-  // async function getCurrentUserInfo() {
-  //   //현재 유저 정보 가져오는 함수,일단은 안씀
-  //   try {
-  //     const userInfo = await GoogleSignin.signInSilently();
-  //     setUserInfo(userInfo);
-  //   } catch (error) {
-  //     if (error.code === statusCodes.SIGN_IN_REQUIRED) {
-  //       // when user hasn't signed in yet
-  //       Alert.alert('Please Sign in');
-  //       setIsLoggedIn(false);
-  //     } else {
-  //       Alert.alert('Something else went wrong... ', error.toString());
-  //       setIsLoggedIn(false);
-  //     }
-  //   }
-  // }
   return (
     <View style={{alignItems: 'center'}}>
       <GoogleSigninButton
@@ -123,7 +92,6 @@ const SnsGoogleLogin = () => {
         color={GoogleSigninButton.Color.Light}
         onPress={() => signIn()} //구글 로그인 버튼 누르면 signIn 함수 실행하고 UserInfo를 Home화면으로  보내야 함
       />
-      {/* <Button title="Logout" onPress={() => signOut()} /> */}
     </View>
   );
 };
