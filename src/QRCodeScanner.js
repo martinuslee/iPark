@@ -27,7 +27,6 @@ const ScanScreen = () => {
   const [email, setEmail] = useState(''); //email 담아서 fetch(post)때 쓸라고
   const [users, setUsers] = useState([]); //memberData 에서 user정보 받기 위함
   const [photoURL, setphotoURL] = useState(null); //google 이미지
-  const [vaccine, setVaccine] = useState(false);
   const [member, setMember] = useState([]);
   const [error, setError] = useState(null);
   const [scanned, setScanned] = useState(false);
